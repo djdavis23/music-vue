@@ -27,7 +27,7 @@
           <div class="card bg-light mb-3">
             <h3 class="card-header">{{song.artist}}</h3>
             <div class="card-body">
-              <h5 class="card-title" @click="playTitle(song.id)">{{song.title}}</h5>
+              <h5 class="card-title clickable" @click="playTitle(song.id)">{{song.title}}</h5>
               <h6 class="card-subtitle text-muted">{{song.collection}}</h6>
             </div>
             <img style="width: 100%; display: block;" :src="song.albumArt" alt="Card image">
@@ -37,6 +37,9 @@
                 <source :src="song.preview" type="audio/aac">
                 <source :src="song.preview" type="audio/mp4"> Your browser does not support the audio element.
               </audio>
+            </div>
+            <div class="card-body text-primary">
+              <h5 class="clickable" @click="addToPlaylist(song)"><i class="fas fa-plus-circle"></i> Add to playlist</h5>
             </div>
             <div class="card-footer">
               Price: {{song.price}} @ itunes.apple.com
@@ -85,6 +88,11 @@
         console.log(aud)
         //@ts-ignore
         aud.play()
+      },
+
+      //ADD SELECTED SONG TO PLAYLIST
+      addToPlaylist(song) {
+        console.log("Adding " + song.title + " to playlist")
       }
     },
 
@@ -134,7 +142,7 @@
     background: #325d88
   }
 
-  .card-title {
+  .clickable {
     cursor: pointer;
   }
 
