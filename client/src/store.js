@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
+import Song from './models/Song'
+import User from './models/User'
+import router from './router'
 
 
 Vue.use(Vuex)
@@ -10,40 +13,52 @@ const appleApi = Axios.create({
   timeout: 3000
 })
 
+const myTunesApi = Axios.create({
+  baseURL: '//localhost:3000',
+  timeout: 3000
+})
+
 export default new Vuex.Store({
   state: {
+    user: {},
     songs: []
 
   },
   mutations: {
+
+    setUser(state, data) {
+      state.user = new User(data)
+    },
+
     setSongs(state, songs) {
       let mySongs = []
       songs.forEach(song => {
-
-        let mySong = {
-          id: song.trackId,
-          title: song.trackName,
-          albumArt: song.artworkUrl60.replace(/60x60/g, "150x150"),
-          artist: song.artistName,
-          collection: song.collectionName,
-          price: song.trackPrice,
-          preview: song.previewUrl
-        }
+        let mySong = new Song(song)
         mySongs.push(mySong)
       })
       state.songs = mySongs
-      console.log("state songs: ", state.songs)
     }
 
   },
   actions: {
 
     registerUser({ commit, dispatch }, creds) {
-      console.log("regsitering user: ", creds)
+      myTunesApi.post('/users/register', creds)
+        .then(res => {
+          commit('setUser', res.data)
+          router.push({ name: 'home' })
+        })
+        .catch(err => console.log(err.message))
     },
 
     loginUser({ commit, dispatch }, creds) {
-      console.log("login user: ", creds)
+      myTunesApi.post('/users/login', creds)
+        .then(res => {
+          console.log("return from login: ", res.data)
+          commit('setUser', res.data)
+          router.push({ name: 'home' })
+        })
+        .catch(err => console.log(err.message))
     },
 
     getMusicByArtist({ commit, dispatch }, artist) {

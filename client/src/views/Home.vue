@@ -5,11 +5,8 @@
       <div class="row">
         <div id="control-panel" class="col-md-6 offset-md-6 col-xs-12">
           <h1 id="welcome" class="mt-2">
-            <strong>Welcome to d2Tunes2</strong>
+            <strong>Welcome {{userName}}</strong>
           </h1>
-          <p class="text-white">Powered by iTunes
-            <i class="fab fa-itunes"></i>
-          </p>
           <form class="form-inline" @submit.prevent="getMusic">
             <!--DO NOT MODIFY THE ID OR ONCLICK ATTRIBUTES IN THIS FORM-->
             <div class="form-group mt-2 p-2">
@@ -56,6 +53,11 @@
 
   export default {
     name: 'home',
+    mounted() {
+      if (!this.$store.state.user.id) {
+        this.$router.push({ name: 'login' })
+      }
+    },
     data() {
       return {
         artist: '',
@@ -99,6 +101,10 @@
     computed: {
       songs() {
         return this.$store.state.songs
+      },
+
+      userName() {
+        return this.$store.state.user.userName
       }
     }
   }

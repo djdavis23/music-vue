@@ -5,15 +5,22 @@ let cors = require('cors')
 let server = express()
 let port = 3000
 
+//connect to db
+require('./db/db-config.js')
+
+server.use(cors())
+
 //configure middleware
 server.use(bp.json())
 server.use(bp.urlencoded({
   extended: true
 }))
-server.use(cors())
+//routes
 
-//connect to db
-require('./db/db-config.js')
+let userRoutes = require('./routes/users')
+
+
+server.use('/users', userRoutes)
 
 
 server.listen(port, () => {
