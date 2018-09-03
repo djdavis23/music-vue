@@ -5,7 +5,7 @@ import Axios from 'axios'
 
 Vue.use(Vuex)
 
-const musicApi = Axios.create({
+const appleApi = Axios.create({
   baseURL: '//itunes.apple.com/search?term=',
   timeout: 3000
 })
@@ -38,8 +38,16 @@ export default new Vuex.Store({
   },
   actions: {
 
+    registerUser({ commit, dispatch }, creds) {
+      console.log("regsitering user: ", creds)
+    },
+
+    loginUser({ commit, dispatch }, creds) {
+      console.log("login user: ", creds)
+    },
+
     getMusicByArtist({ commit, dispatch }, artist) {
-      musicApi.get(artist)
+      appleApi.get(artist)
         .then(res => {
           console.log(res.data.results)
           commit('setSongs', res.data.results)
