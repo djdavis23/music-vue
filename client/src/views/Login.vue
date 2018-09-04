@@ -12,27 +12,27 @@
           <h1 class="text-white mt-2">
             <strong>Welcome to d2Tunes2</strong>
           </h1>
-          <p class="text-white">Powered by iTunes
+          <h5 class="text-white">Powered by iTunes
             <i class="fab fa-itunes"></i>
-          </p>
+          </h5>
           <div>
             <h4 class="login-menu text-white clickable"><span @click="loginForm = true">Login </span>|<span @click="loginForm = false">
                 Register</span></h4>
           </div>
-          <form class="form-inline" v-if="loginForm" @submit.prevent="loginUser">
+          <form v-if="loginForm" @submit.prevent="loginUser">
             <input type="text" class="form-control-lg mt-2 mb-2" name="username" placeholder="Enter User Name" v-model="userName" required/><br>
             <input type="password" class="form-control-lg mb-2" name="password" placeholder="Enter your password" v-model="password"
               required /><br>
             <button type="submit" class="btn btn-primary btn-lg mt-2 mb-2" id="get-music-button">Login</button>
           </form>
-          <form class="form-inline" v-if="!loginForm" @submit.prevent="registerUser">
-            <input type="text" class="form-control-lg mt-2 mb-2 mr-2" name="username" placeholder="Enter User Name" v-model="userName" required
-            /><br>
-            <input type="password" class="form-control-lg mb-2 mr-2" name="password" placeholder="Enter a password" v-model="password" required
-            /><br>
+          <form v-if="!loginForm" @submit.prevent="registerUser">
+            <input type="text" class="form-control-lg mt-2 mb-2 mr-2" name="username" placeholder="Enter User Name" v-model="userName"
+              required /><br>
+            <input type="password" class="form-control-lg mb-2 mr-2" name="password" placeholder="Enter a password" v-model="password"
+              required /><br>
             <input type="password" class="form-control-lg mb-2 mr-2" name="password-confirm" placeholder="Confirm password" v-model="passwordConfirm"
               required /><br>
-            <button type="submit" class="btn btn-primary btn-block mt-2 mb-2" id="get-music-button">Register</button>
+            <button type="submit" class="btn btn-primary btn-lg mt-2 mb-2" id="get-music-button">Register</button>
           </form>
         </div>
       </div>

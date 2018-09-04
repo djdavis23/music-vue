@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Axios from 'axios'
 import Song from './models/Song'
 import User from './models/User'
+import Playlist from './models/Playlist'
 import router from './router'
 
 
@@ -21,9 +22,10 @@ const myTunesApi = Axios.create({
 export default new Vuex.Store({
   state: {
     user: {},
-    songs: []
-
+    songs: [],
+    playlist: {}
   },
+
   mutations: {
 
     setUser(state, data) {
@@ -37,6 +39,11 @@ export default new Vuex.Store({
         mySongs.push(mySong)
       })
       state.songs = mySongs
+    },
+
+    setPlaylist(state, playlist) {
+      console.log("playlists: ", playlist)
+      state.playlist = new Playlist(playlist)
     }
 
   },
@@ -56,6 +63,7 @@ export default new Vuex.Store({
         .then(res => {
           console.log("return from login: ", res.data)
           commit('setUser', res.data)
+          dispatch('getPlaylist', res.data._id)
           router.push({ name: 'home' })
         })
         .catch(err => console.log(err.message))
@@ -68,6 +76,34 @@ export default new Vuex.Store({
           commit('setSongs', res.data.results)
         })
         .catch(err => console.error(err.message))
+    },
+
+    getPlaylist({ commit, dispatch }, userId) {
+      myTunesApi.get(`/api/playlists/by-user/${userId}`)
+        .then(res => {
+          console.log("playlist ", res.data)
+          commit('setPlaylist', res.data)
+        })
+        .catch(err => console.log(err.message))
+    },
+
+    createPlaylist({ commit, dispatch }, playlist) {
+      console.log("sending: ", playlist)
+      myTunesApi.post('/api/playlists', playlist)
+        .then(res => commit('setPlaylist', res.data))
+        .catch(err => console.log(err.message))
+    },
+
+    updatePlaylist({ commit, dispatch }, playlist) {
+      console.log('sending update: ', playlist)
+      myTunesApi.put(`/api/playlists/${playlist._id}`, playlist)
+        .then(res => {
+          console.log("after update ", res.data)
+          commit('setPlaylist', res.data)
+        })
+        .catch(err => console.log(err.message))
     }
+
+
   }
 })

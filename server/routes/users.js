@@ -9,9 +9,7 @@ router.post('/login', (req, res, next) => {
     .then(user => {
       return res.send(user)
     })
-    .catch(err => {
-      res.status(401).send(err.message)
-    })
+    .catch(err => next())
 })
 
 router.post('/register', (req, res, next) => {
@@ -22,9 +20,7 @@ router.post('/register', (req, res, next) => {
     .then(user => {
       return res.send(user)
     })
-    .catch(err => {
-      res.status(400).send(err.message)
-    })
+    .catch(err => next())
 })
 
 module.exports = router
