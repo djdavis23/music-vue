@@ -28,18 +28,26 @@
 
     data() {
       return {
-        revealed: false
+        activePlayer: undefined
       };
     },
 
     methods: {
 
       prevPlay(id) {
-        this.$emit('prevPlay', id)
+
+        if (this.activePlayer) {
+          this.activePlayer.pause()
+        }
+        this.activePlayer = document.getElementById(id)
       },
 
       playTitle(id) {
-        this.$emit('playTitle', id)
+
+        let aud = document.getElementById(id)
+        console.log(aud)
+        //@ts-ignore
+        aud.play()
       },
 
       moveUp(song) {
