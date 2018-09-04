@@ -4,7 +4,7 @@
     <div id="left-panel" class="col-md-6 col-xs-12">
       <div class="row">
         <div id="control-panel" class="col-md-6 offset-md-6 col-xs-12">
-          <h1 id="welcome" class="mt-2 text-lg">
+          <h1 id="welcome" class="mt-2 text-lg text-center text-white">
             <strong>Welcome {{user.userName}}</strong>
           </h1>
           <form class="form-inline" @submit.prevent="getMusic">
@@ -15,11 +15,17 @@
             </div>
           </form>
         </div>
+        <div class="col-md-6 offset-md-6 text-white text-center mt-2">
+          <h2 class="clickable" @click="revealed = !revealed">Playlist <i class="fas fa-arrows-alt"></i></h2>
+        </div>
       </div>
 
+      <!-- <Playlist v-on: prevPlay='prevPlay' v-on: playTitle="playTitle" /> -->
+
       <!-- from Playlist component -->
-      <div class="row">
-        <div v-if="playlist._id" v-for="song in playlist.songs" :key="song.trackId" class="col-md-8 col-xs-12 song-card">
+
+      <div class="row list">
+        <div v-if="playlist._id && revealed" v-for="song in playlist.songs" :key="song.trackId" class="col-md-8 col-xs-12 song-card">
           <div class="card bg-light mb-3">
             <h3 class="card-header clickable" @click="playTitle(song.trackId)">{{song.artist}}: {{song.title}}</h3>
             <div class="card-body">
@@ -30,8 +36,8 @@
               </audio>
             </div>
             <div class="card-footer">
-              <span class="clickable" @click="moveUp(song)"><i class="fas fa-chevron-circle-up"></i></span>&nbsp
-              <span class="clickable" @click="moveDown(song)"><i class="fas fa-chevron-circle-down"></i></span>&nbsp
+              <span class="clickable" @click="moveUp(song)"><i class="fas fa-chevron-circle-up"></i></span>&nbsp&nbsp
+              <span class="clickable" @click="moveDown(song)"><i class="fas fa-chevron-circle-down"></i></span>&nbsp&nbsp
               <span class="clickable" @click="remove(song)"><i class="fas fa-minus-circle"></i></span>
             </div>
           </div>
@@ -42,6 +48,9 @@
     </div>
     <!-- RIGHT PANEL -->
     <div id="right-panel" class="col-md-6 offset-md-6 col-xs-12">
+
+      <!-- <Search v-on: prevPlay='prevPlay' v-on: playTitle="playTitle" /> -->
+
       <div id="songs" class="row">
         <div v-for="song in songs" :key="song.trackId" class="col-md-6 col-xs-12 song-card">
           <div class="card bg-light mb-3">
@@ -73,10 +82,16 @@
 
 <script>
 
-  import Playlist from '@/components/Playlist.vue';
+  import Playlist from "@/components/Playlist.vue";
+  import Search from "@/components/Search.vue";
 
   export default {
     name: 'home',
+
+    components: {
+      Playlist,
+      Search
+    },
 
     mounted() {
       if (!this.$store.state.user.id) {
@@ -84,25 +99,17 @@
       }
     },
 
-    components: {
-      Playlist
-    },
-
     data() {
       return {
         artist: '',
-        activePlayer: undefined
+        activePlayer: undefined,
+        revealed: false
       }
     },
     components: {
 
     },
     methods: {
-
-      getMusic() {
-        this.$store.dispatch('getMusicByArtist', this.artist)
-        this.artist = ""
-      },
 
       //this function will pause the previously selected audio track and set
       //current track as the active player
@@ -113,7 +120,6 @@
         this.activePlayer = document.getElementById(id)
       },
 
-
       //this function plays the preview for the selected title element
       playTitle(id) {
         let aud = document.getElementById(id)
@@ -122,7 +128,14 @@
         aud.play()
       },
 
-      //ADD SELECTED SONG TO PLAYLIST
+
+      //FROM SEARCH COMPONENT
+      getMusic() {
+        this.$store.dispatch('getMusicByArtist', this.artist)
+        this.artist = ""
+      },
+
+      //add selected song to playlist
       addToPlaylist(song) {
         if (this.playlist._id) {
           this.playlist.songs.push(song)
@@ -142,9 +155,12 @@
             songs: songArr
           })
         }
+        this.revealed = true
       },
 
       //FROM PLAYLIST COMPONENT
+
+      //move song up the playlist
       moveUp(song) {
         let index = this.playlist.songs.indexOf(song)
         if (index > 0) {
@@ -159,6 +175,7 @@
         }
       },
 
+      //move song down the playlist
       moveDown(song) {
         let index = this.playlist.songs.indexOf(song)
         if (index < this.playlist.songs.length - 1) {
@@ -173,6 +190,7 @@
         }
       },
 
+      //remove song from the playlist
       remove(song) {
         let index = this.playlist.songs.indexOf(song)
         this.playlist.songs.splice(index, 1)
@@ -201,17 +219,10 @@
 </script>
 
 <style>
-  #welcome {
-    color: white;
-  }
-
-
   body {
     background-color: black;
     height: 100vh;
   }
-
-
 
   #left-panel {
     position: fixed;
@@ -220,12 +231,6 @@
     background-image: url("../assets/music.jpg");
     background-size: cover;
     background-repeat: no-repeat;
-
-  }
-
-  .flexbox {
-    display: flex;
-    justify-content: center
   }
 
   .form-group {
@@ -238,6 +243,10 @@
   .card-footer {
     color: white;
     background: #325d88
+  }
+
+  .card-footer {
+    font-size: 1.5em;
   }
 
   .clickable {
@@ -253,7 +262,7 @@
     .song-card {
       position: relative;
       z-index: 0;
-      padding-top: 230px;
+      padding-top: 260px;
     }
   }
 
@@ -263,8 +272,6 @@
   }
 
   #control-panel {
-    /* position: fixed;
-    z-index: 10; */
     text-align: left;
 
   }
@@ -273,7 +280,8 @@
     min-width: 50%;
   }
 
-  .text-lg {
-    font-size: 2rem;
+  .list {
+    overflow: auto;
+    max-height: 85vh;
   }
 </style>
