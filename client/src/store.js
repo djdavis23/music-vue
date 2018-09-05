@@ -9,11 +9,13 @@ import router from './router'
 
 Vue.use(Vuex)
 
+//axios api for iTunes query
 const appleApi = Axios.create({
   baseURL: '//itunes.apple.com/search?term=',
   timeout: 3000
 })
 
+//axios api for myTunes query
 const myTunesApi = Axios.create({
   baseURL: '//localhost:3000',
   timeout: 3000
@@ -42,7 +44,6 @@ export default new Vuex.Store({
     },
 
     setPlaylist(state, playlist) {
-      console.log("playlists: ", playlist)
       state.playlist = new Playlist(playlist)
     }
 
@@ -61,7 +62,6 @@ export default new Vuex.Store({
     loginUser({ commit, dispatch }, creds) {
       myTunesApi.post('/users/login', creds)
         .then(res => {
-          console.log("return from login: ", res.data)
           commit('setUser', res.data)
           dispatch('getPlaylist', res.data._id)
           router.push({ name: 'home' })
@@ -72,7 +72,6 @@ export default new Vuex.Store({
     getMusicByArtist({ commit, dispatch }, artist) {
       appleApi.get(artist)
         .then(res => {
-          console.log(res.data.results)
           commit('setSongs', res.data.results)
         })
         .catch(err => console.error(err.message))
@@ -81,24 +80,20 @@ export default new Vuex.Store({
     getPlaylist({ commit, dispatch }, userId) {
       myTunesApi.get(`/api/playlists/by-user/${userId}`)
         .then(res => {
-          console.log("playlist ", res.data)
           commit('setPlaylist', res.data)
         })
         .catch(err => console.log(err.message))
     },
 
     createPlaylist({ commit, dispatch }, playlist) {
-      console.log("sending: ", playlist)
       myTunesApi.post('/api/playlists', playlist)
         .then(res => commit('setPlaylist', res.data))
         .catch(err => console.log(err.message))
     },
 
     updatePlaylist({ commit, dispatch }, playlist) {
-      console.log('sending update: ', playlist)
       myTunesApi.put(`/api/playlists/${playlist._id}`, playlist)
         .then(res => {
-          console.log("after update ", res.data)
           commit('setPlaylist', res.data)
         })
         .catch(err => console.log(err.message))

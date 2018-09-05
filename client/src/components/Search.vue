@@ -45,36 +45,27 @@
         this.$store.dispatch('getMusicByArtist', this.artist)
         this.artist = ""
       },
-
+      //call's parent class preview player
       prevPlay(id) {
         this.$emit('prevPlay', id)
-        // if (this.activePlayer) {
-        //   this.activePlayer.pause()
-        // }
-        // this.activePlayer = document.getElementById(id)
       },
 
+      //calls parent class play title 
       playTitle(id) {
         this.$emit('playTitle', id)
-        // let aud = document.getElementById(id)
-        // console.log(aud)
-        // //@ts-ignore
-        // aud.play()
       },
 
       //add selected song to playlist
       addToPlaylist(song) {
         if (this.playlist._id) {
           this.playlist.songs.push(song)
-          console.log("updating playlist")
           this.$store.dispatch('updatePlaylist', {
             _id: this.playlist._id,
             userId: this.playlist.userId,
             songs: this.playlist.songs
           })
         }
-        else {
-          console.log("creating playlist")
+        else {//create new playlist if one does not already exist          
           let songArr = []
           songArr.push(song)
           this.$store.dispatch('createPlaylist', {

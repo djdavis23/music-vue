@@ -34,22 +34,17 @@
 
     methods: {
 
+      //calls parent class preview player
       prevPlay(id) {
         this.$emit('prevPlay', id)
-        // if (this.activePlayer) {
-        //   this.activePlayer.pause()
-        // }
-        // this.activePlayer = document.getElementById(id)
       },
 
+      //calls parent class play title method
       playTitle(id) {
         this.$emit('playTitle', id)
-        // let aud = document.getElementById(id)
-        // console.log(aud)
-        // //@ts-ignore
-        // aud.play()
       },
 
+      //moves a song up one position in the playlist
       moveUp(song) {
         let index = this.playlist.songs.indexOf(song)
         if (index > 0) {
@@ -64,6 +59,7 @@
         }
       },
 
+      //moves a song down one position in the playlist
       moveDown(song) {
         let index = this.playlist.songs.indexOf(song)
         if (index < this.playlist.songs.length - 1) {
@@ -78,6 +74,7 @@
         }
       },
 
+      //removes a song from the playlist
       remove(song) {
         let index = this.playlist.songs.indexOf(song)
         this.playlist.songs.splice(index, 1)

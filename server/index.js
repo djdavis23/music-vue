@@ -20,7 +20,6 @@ server.use(bp.urlencoded({
 let userRoutes = require('./routes/users')
 let musicRoutes = require('./routes/playlists')
 
-
 server.use('/users', userRoutes)
 server.use('/api/playlists', musicRoutes)
 
@@ -29,6 +28,7 @@ server.use('/api/playlists/*', (err, req, res, next) => {
   res.status(400).send(err.message)
 })
 
+//verify server running
 server.use('*', (req, res, next) => {
   res.status(404).send('Resource not found')
 })
