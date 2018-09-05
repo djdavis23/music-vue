@@ -15,8 +15,8 @@ server.use(bp.json())
 server.use(bp.urlencoded({
   extended: true
 }))
-//routes
 
+//routes
 let userRoutes = require('./routes/users')
 let musicRoutes = require('./routes/playlists')
 
@@ -24,6 +24,7 @@ let musicRoutes = require('./routes/playlists')
 server.use('/users', userRoutes)
 server.use('/api/playlists', musicRoutes)
 
+//default error catching
 server.use('/api/playlists/*', (err, req, res, next) => {
   res.status(400).send(err.message)
 })

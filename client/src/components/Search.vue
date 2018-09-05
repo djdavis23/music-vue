@@ -36,7 +36,7 @@
     data() {
       return {
         artist: '',
-        activePlayer: undefined
+        activePlayer: ''
       }
     },
 

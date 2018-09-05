@@ -2,9 +2,9 @@
   <div class="row list">
     <div v-if="playlist._id && revealed" v-for="song in playlist.songs" :key="song.trackId" class="col-md-8 col-xs-12 song-card">
       <div class="card bg-light mb-3">
-        <h3 class="card-header clickable" @click="playTitle(song.trackId)">{{song.artist}}: {{song.title}}</h3>
+        <h3 class="card-header clickable" @click="playTitle(song._id)">{{song.artist}}: {{song.title}}</h3>
         <div class="card-body">
-          <audio controls :id="song.trackId" @play="prevPlay(song.trackId)">
+          <audio controls :id="song._id" @play="prevPlay(song._id)">
             <source :src="song.preview" type="audio/ogg">
             <source :src="song.preview" type="audio/aac">
             <source :src="song.preview" type="audio/mp4"> Your browser does not support the audio element.
@@ -28,7 +28,7 @@
 
     data() {
       return {
-        activePlayer: undefined
+        activePlayer: ''
       };
     },
 
