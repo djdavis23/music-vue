@@ -24,30 +24,30 @@
   export default {
     name: 'Playlist',
 
-    props: ['revealed'],
+    props: ['revealed', 'activePlayer'],
 
     data() {
       return {
-        activePlayer: ''
+
       };
     },
 
     methods: {
 
       prevPlay(id) {
-
-        if (this.activePlayer) {
-          this.activePlayer.pause()
-        }
-        this.activePlayer = document.getElementById(id)
+        this.$emit('prevPlay', id)
+        // if (this.activePlayer) {
+        //   this.activePlayer.pause()
+        // }
+        // this.activePlayer = document.getElementById(id)
       },
 
       playTitle(id) {
-
-        let aud = document.getElementById(id)
-        console.log(aud)
-        //@ts-ignore
-        aud.play()
+        this.$emit('playTitle', id)
+        // let aud = document.getElementById(id)
+        // console.log(aud)
+        // //@ts-ignore
+        // aud.play()
       },
 
       moveUp(song) {

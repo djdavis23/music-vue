@@ -20,14 +20,14 @@
         </div>
       </div>
 
-      <Playlist :revealed="revealed" />
+      <Playlist :revealed="revealed" :activePlayer="activePlayer" v-on:prevPlay="prevPlay" v-on:playTitle="playTitle" />
 
 
     </div>
     <!-- RIGHT PANEL -->
     <div id="right-panel" class="col-md-6 offset-md-6 col-xs-12">
 
-      <Search />
+      <Search :activePlayer="activePlayer" v-on:prevPlay="prevPlay" v-on:playTitle="playTitle" />
 
 
 
@@ -70,7 +70,23 @@
       getMusic() {
         this.$store.dispatch('getMusicByArtist', this.artist)
         this.artist = ""
-      }
+      },
+
+      prevPlay(id) {
+        if (this.activePlayer) {
+          this.activePlayer.pause()
+        }
+        this.activePlayer = document.getElementById(id)
+      },
+
+      playTitle(id) {
+
+        let aud = document.getElementById(id)
+        console.log(aud)
+        //@ts-ignore
+        aud.play()
+      },
+
 
 
     },

@@ -31,12 +31,12 @@
   export default {
     name: 'Search',
 
-
+    props: ['activePlayer'],
 
     data() {
       return {
-        artist: '',
-        activePlayer: ''
+        artist: ''
+
       }
     },
 
@@ -47,19 +47,19 @@
       },
 
       prevPlay(id) {
-        //this.$emit('prevPlay', id)
-        if (this.activePlayer) {
-          this.activePlayer.pause()
-        }
-        this.activePlayer = document.getElementById(id)
+        this.$emit('prevPlay', id)
+        // if (this.activePlayer) {
+        //   this.activePlayer.pause()
+        // }
+        // this.activePlayer = document.getElementById(id)
       },
 
       playTitle(id) {
-        //this.$emit('playTitle', id)
-        let aud = document.getElementById(id)
-        console.log(aud)
-        //@ts-ignore
-        aud.play()
+        this.$emit('playTitle', id)
+        // let aud = document.getElementById(id)
+        // console.log(aud)
+        // //@ts-ignore
+        // aud.play()
       },
 
       //add selected song to playlist
