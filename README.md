@@ -1,0 +1,2 @@
+# music-vue
+This is a rebuild and expansion of my d2tunes project using Vue.js and a local server.  Original app was built with just Bootstrap and Vanilla js.  Axios was used to send requests to the Apple iTunes servers for song previews for a given artist.  this project is recreated using Vue.js for updates on the front end.  Additionally, the user may save and edit a favorites list and persist this data via a Node.js/Mongo DB backend server
